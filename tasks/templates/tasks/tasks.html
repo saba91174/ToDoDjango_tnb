@@ -1,0 +1,60 @@
+{% extends "tasks/base.html" %}
+{% block content %}
+<div class="row w-75 mx-auto mt-4">
+    <div class="col-4">
+        <div>
+            <div class="card" style="box-shadow: 4px 4px 10px 2px grey;">
+                <div class="card-body">
+                    <h4 class="card-title text-start mb-3">Add New Task:</h4>
+                    <form method="post" action="{% url 'create-task' %}?date={{ filter_date }}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input name="title" type="text" class="form-control" id="title" value="{{ form.title.value }}">
+                        </div>
+                        <button class="btn btn-primary" style="background-image: linear-gradient(to bottom, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+    border-radius: 20px;
+    box-shadow: 3px 2px 5px 1px grey;">Submit</button>
+                    </form>
+                    <h4 class="card-title text-start my-3 text-primary">Total Tasks : {{ total_tasks }}</h4>
+                    <h4 class="card-title text-start my-3 text-success">Completed Tasks : {{ completed_tasks }}</h4>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="card text-center" style="box-shadow: 4px 4px 10px 2px grey;">
+            <div class="card-header">
+                <a class="btn btn-outline-primary" href="{% url 'tasks' %}?date={{ filter_date_previous }}">< {% if filter_date_previous == today %}Today{% else %}{{ filter_date_previous}}{% endif %}</a>
+                <a class="btn btn-primary disabled">{% if filter_date == today %}Today{% else %}{{ filter_date }}{% endif %}</a>
+                <a class="btn btn-outline-primary" href="{% url 'tasks' %}?date={{ filter_date_next }}">{% if filter_date_next == today %}Today{% else %}{{ filter_date_next }}{% endif %} ></a>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title text-start mb-3">Tasks :</h4>
+                {% for task in object_list %}
+                    <div class="card mb-2 {% if task.completed %}border-success{% endif %}">
+                        <div class="card-body" style="outline: 4px outset #a3b4cc;">
+                            <div class="row">
+                                <div class="col-6 text-start {% if task.completed %}text-decoration-line-through{% endif %}">
+                                    {{ task.title }}
+                                </div>
+                                <div class="col-6 text-end">
+                                    <a class="btn btn-sm {% if task.completed %}btn-secondary{% else %}btn-success{% endif %}" href="{% url 'toggle-check' task.id %}">{% if task.completed %}&#215;{% else %}&#10003;{% endif %}</a>
+                                    <a class="btn btn-sm btn-outline-primary" href="{% url 'update-task' task.id %}">Edit</a>
+                                    <a class="btn btn-sm btn-outline-danger" href="{% url 'delete-task' task.id %}">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                <div class="text-center">No Tasks</div>
+                {% endfor %}
+                
+            </div>
+            <div class="card-footer text-muted">
+                
+            </div>
+        </div> 
+    </div>
+</div>
+{% endblock %}

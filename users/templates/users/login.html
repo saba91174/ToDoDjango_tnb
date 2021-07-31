@@ -1,0 +1,26 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<div class="row w-50 mx-auto mt-4">
+    <div class="card" style="background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
+        <div class="card-body">
+            <h4 class="card-title text-start mb-3" style="color:wheat;">Login:</h4>
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="title" style="color:wheat;" class="form-label">Username</label>
+                    <input name="username" type="text" class="form-control" id="title" value="{% if form.username.value %}{{ form.username.value }}{% endif %}">
+                </div>
+                <div class="mb-3">
+                    <label for="password" style="color:wheat;" class="form-label">Password</label>
+                    <input name="password" type="password" class="form-control" id="password1">
+                </div>
+                <button class="btn btn-primary">Submit</button>
+            </form>
+            <div class="text-center mt-3">Dont have an account?</div>
+            <div class="text-center mb-3"><a style="color:greenyellow;" href="{% url 'sign-up' %}">Sign Up</a></div>
+        </div>  
+    </div> 
+</div>
+    
+{% endblock %}
